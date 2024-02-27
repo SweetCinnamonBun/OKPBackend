@@ -81,7 +81,7 @@ namespace OKPBackend.Controllers
             return BadRequest("Password or email is incorrect.");
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
         {
 
@@ -89,6 +89,11 @@ namespace OKPBackend.Controllers
             if (userRegisterDto.Password != userRegisterDto.ConfirmPassword)
             {
                 return BadRequest("Passwords do not match");
+            }
+
+            if (userRegisterDto.Roles == null || userRegisterDto.Roles.Length == 0)
+            {
+                return BadRequest("A role must be assigned for a user.");
             }
 
             var newUser = new User
@@ -117,7 +122,7 @@ namespace OKPBackend.Controllers
             }
             else
             {
-                return BadRequest("Failed to register user: " + string.Join(", ", identityResult.Errors.Select(e => e.Description)));
+                return BadRequest("Failed to register user: " + "\n" + string.Join(" ", identityResult.Errors.Select(e => e.Description)));
             }
 
             try
