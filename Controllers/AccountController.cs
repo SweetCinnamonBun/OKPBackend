@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.IdentityModel.Tokens;
 using OKPBackend.Models.Domain;
 using OKPBackend.Models.DTO.Users;
 using OKPBackend.Repositories.Users;
@@ -215,7 +216,7 @@ namespace OKPBackend.Controllers
 
         public async Task<IActionResult> ForgotUsernameOrPassword(string email)
         {
-            if (string.IsNullOrEmpty(email)) return BadRequest("Invalid email");
+            if (string.IsNullOrEmpty(email) || email == "") return BadRequest("Invalid email");
 
             var user = await userManager.FindByEmailAsync(email);
 
@@ -226,7 +227,7 @@ namespace OKPBackend.Controllers
             {
                 if (await SendForgotUsernameOrPasswordEmail(user))
                 {
-                    return Ok(new JsonResult(new { title = "Forgot password email sent", message = "Please check your email" }));
+                    return Ok("Email was sent.");
                 }
 
                 return BadRequest("Failed to send email.");
@@ -241,6 +242,10 @@ namespace OKPBackend.Controllers
         [HttpPut("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
         {
+            if (resetPasswordDto.NewPassword.IsNullOrEmpty() || resetPasswordDto.ConfirmNewPassword.IsNullOrEmpty())
+            {
+                return BadRequest("Please provide a new password and confirm password");
+            }
             var user = await userManager.FindByEmailAsync(resetPasswordDto.Email);
             if (user == null) return Unauthorized("This email address has not been registered yet");
             if (user.EmailConfirmed == false) return BadRequest("Please confirm your email address first");
@@ -253,15 +258,15 @@ namespace OKPBackend.Controllers
                 var result = await userManager.ResetPasswordAsync(user, decodedToken, resetPasswordDto.NewPassword);
                 if (result.Succeeded)
                 {
-                    return Ok(new JsonResult(new { title = "Password reset successful", message = "Your password has been reset" }));
+                    return Ok("Your password has been reset successfully");
                 }
 
-                return BadRequest("Invalid token. Please try again");
+                return BadRequest("Password has not met the requirements");
             }
             catch (System.Exception)
             {
 
-                return BadRequest("Invalid token. Please try again");
+                return BadRequest("Password has not met the requirements");
             }
         }
 
@@ -300,7 +305,7 @@ namespace OKPBackend.Controllers
 
             var token = await userManager.GeneratePasswordResetTokenAsync(user);
             token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-            var url = $"http://localhost:5173/{reset_password_path}?token={token}&email={user.Email}";
+            var url = $"http://localhost:5173/reset-password?token={token}&email={user.Email}";
 
             var body = $"<p>Hello: {user.UserName}</p>" + "<p>In order to reset your password, please click on the following link.</p>" +
                         $"<p><a href=\"{url}\">Click Here</a></p>" +

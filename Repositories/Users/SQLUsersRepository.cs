@@ -33,6 +33,7 @@ namespace OKPBackend.Repositories.Users
             var claims = new List<Claim>();
 
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            claims.Add(new Claim(ClaimTypes.Name, user.UserName));
 
             foreach (var role in roles)
             {
@@ -43,7 +44,7 @@ namespace OKPBackend.Repositories.Users
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(configuration["Jwt:Issuer"], configuration["Jwt:Audience"], claims, expires: DateTime.Now.AddMinutes(10), signingCredentials: credentials);
+            var token = new JwtSecurityToken(configuration["Jwt:Issuer"], configuration["Jwt:Audience"], claims, expires: DateTime.Now.AddMinutes(2), signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
 
