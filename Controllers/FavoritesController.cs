@@ -50,5 +50,23 @@ namespace OKPBackend.Controllers
             return Ok("Success");
 
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var favorite = await dbContext.Favorites.FirstOrDefaultAsync(x => x.Key == id);
+
+            if (favorite == null)
+            {
+                return BadRequest("Invalid id");
+            }
+
+            dbContext.Favorites.Remove(favorite);
+            await dbContext.SaveChangesAsync();
+
+            return Ok("Favorite was deleted");
+
+        }
     }
 }

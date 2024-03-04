@@ -36,7 +36,7 @@ namespace OKPBackend.Controllers
         }
 
         [HttpDelete]
-        [Route("id")]
+        [Route("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);

@@ -169,7 +169,7 @@ namespace OKPBackend.Controllers
                                     query GetGroupedProducts {{
                                         product(where: {{ id: {{ _in: {JsonSerializer.Serialize(keys)} }} }}) {{
                                             id
-                                            productInformations {{
+                                            productInformations(where: {{ language: {{ _eq: fi }} }}) {{
                                                 name
                                                 description
                                             }}
