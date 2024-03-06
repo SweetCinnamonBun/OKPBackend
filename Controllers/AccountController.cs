@@ -46,12 +46,12 @@ namespace OKPBackend.Controllers
 
                 if (user == null)
                 {
-                    return BadRequest("User was not found");
+                    return BadRequest("Salasana tai sähköpostisi on väärä.");
                 }
 
                 if (user.EmailConfirmed == false)
                 {
-                    return BadRequest("Please confirm your email address");
+                    return BadRequest("Vahvista sähköpostisi kirjautuaksesi sisään.");
                 }
 
                 if (user != null)
@@ -79,17 +79,21 @@ namespace OKPBackend.Controllers
             }
 
 
-            return BadRequest("Password or email is incorrect.");
+            return BadRequest("Salasana tai sähköpostisi on väärä.");
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
         {
+            if (ModelState.IsValid == false)
+            {
+                return BadRequest("Käytitkö oikeaa sähköpostiosoitetta!");
+            }
 
             //Checks if passwords match
             if (userRegisterDto.Password != userRegisterDto.ConfirmPassword)
             {
-                return BadRequest("Passwords do not match");
+                return BadRequest("Salasanat eivät täsmää.");
             }
 
             if (userRegisterDto.Roles == null || userRegisterDto.Roles.Length == 0)
@@ -123,7 +127,7 @@ namespace OKPBackend.Controllers
             }
             else
             {
-                return BadRequest("Failed to register user: " + "\n" + string.Join(" ", identityResult.Errors.Select(e => e.Description)));
+                return BadRequest("Rekisteröityminen ei onnistunut: " + "\n" + string.Join(" ", identityResult.Errors.Select(e => e.Description)));
             }
 
             try
@@ -139,7 +143,7 @@ namespace OKPBackend.Controllers
             };
 
 
-            return BadRequest("Something went wrong");
+            return BadRequest("Jotain meni vikaan.");
         }
 
         [HttpPut("confirm-email")]
@@ -151,13 +155,13 @@ namespace OKPBackend.Controllers
             // If no user was found, it returns an error stating that the email has not been registered.
             if (user == null)
             {
-                return Unauthorized("This email address has not been registered yet.");
+                return Unauthorized("Tämä sähköposti ei ole rekisteröity.");
             }
 
             // Checks if email was already confirmed.
             if (user.EmailConfirmed == true)
             {
-                return BadRequest("Your email was confirmed before. Please login to your account");
+                return BadRequest("Sähköpostisi on jo vahvistettu. Voit kirjatua sisään.");
             }
 
             // Decodes the token that was passed in from the client.
@@ -178,7 +182,7 @@ namespace OKPBackend.Controllers
                 return BadRequest(e.Message);
             }
 
-            return BadRequest("Something went wrong. Please check if you provided a valid token and an email address");
+            return BadRequest("Jotain meni vikaan. Kirjoita sähköpostisi uudestaan alla olevaan kenttään saadaksesi uuden sähkoposti linkin.");
 
 
         }
@@ -192,8 +196,8 @@ namespace OKPBackend.Controllers
             // Finds the user based on the email address provided.
             var user = await userManager.FindByEmailAsync(email);
 
-            if (user == null) return Unauthorized("This email address has not been registered yet");
-            if (user.EmailConfirmed == true) return BadRequest("Your email address was confirmed before. Please login to your account");
+            if (user == null) return Unauthorized("Tämä sähköposti ei ole rekisteröitynyt vielä.");
+            if (user.EmailConfirmed == true) return BadRequest("Olet jo vahvistanut sähköpostiosoitteesi. Voit kirjatua sisään.");
 
             try
             {
@@ -202,12 +206,12 @@ namespace OKPBackend.Controllers
                     return Ok(new JsonResult(new { title = "Confirmation link sent", message = "Please confirm your email address" }));
                 }
 
-                return BadRequest("Failed to send email.");
+                return BadRequest("Sähköpostin lähettäminen epäonnistui.");
             }
             catch (System.Exception)
             {
 
-                return BadRequest("Failed to send email");
+                return BadRequest("Sähköpostin lähettäminen epäonnistui.");
             }
 
         }
@@ -220,22 +224,22 @@ namespace OKPBackend.Controllers
 
             var user = await userManager.FindByEmailAsync(email);
 
-            if (user == null) return Unauthorized("This email address has not been registered yet");
-            if (user.EmailConfirmed == false) return BadRequest("please confirm your email address first");
+            if (user == null) return Unauthorized("Tätä sähköpostia ei ole vielä rekisteröity.");
+            if (user.EmailConfirmed == false) return BadRequest("Vahvista sähköpostisi ensin.");
 
             try
             {
                 if (await SendForgotUsernameOrPasswordEmail(user))
                 {
-                    return Ok("Email was sent.");
+                    return Ok("Sähköposti viesti lähetetty.");
                 }
 
-                return BadRequest("Failed to send email.");
+                return BadRequest("Sähköpostiviestin lähettäminen epäonnistui");
             }
             catch (System.Exception)
             {
 
-                return BadRequest("Failed to send email.");
+                return BadRequest("Sähköpostiviestin lähettäminen epäonnistui");
             }
         }
 
@@ -258,15 +262,15 @@ namespace OKPBackend.Controllers
                 var result = await userManager.ResetPasswordAsync(user, decodedToken, resetPasswordDto.NewPassword);
                 if (result.Succeeded)
                 {
-                    return Ok("Your password has been reset successfully");
+                    return Ok("Salasanan vaihtaminen onnistui!");
                 }
 
-                return BadRequest("Password has not met the requirements");
+                return BadRequest("Salasana ei täyty vaatimuksia.");
             }
             catch (System.Exception)
             {
 
-                return BadRequest("Password has not met the requirements");
+                return BadRequest("Salasana ei täyty vaatimuksia.");
             }
         }
 
