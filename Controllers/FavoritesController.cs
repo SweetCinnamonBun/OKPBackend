@@ -32,6 +32,23 @@ namespace OKPBackend.Controllers
 
         }
 
+        [HttpGet("user-favorites/{userId}")]
+        public async Task<IActionResult> GetUserFavorites(string userId)
+        {
+            // Check if the userId parameter is provided
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest("User ID is required.");
+            }
+
+            // Retrieve favorites associated with the provided userId
+            var userFavorites = await dbContext.Favorites
+                                        .Where(f => f.UserId == userId)
+                                        .ToListAsync();
+
+            return Ok(userFavorites);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] AddFavoriteDto addFavoriteDto)
         {
@@ -43,6 +60,13 @@ namespace OKPBackend.Controllers
             }
 
             var favorite = mapper.Map<Favorite>(addFavoriteDto);
+            var existingFavorite = await dbContext.Favorites
+                        .FirstOrDefaultAsync(f => f.UserId == addFavoriteDto.UserId && f.Key == addFavoriteDto.Key);
+
+            if (existingFavorite != null)
+            {
+                return Conflict("Favorite already exists for this user");
+            }
 
             var response = await dbContext.Favorites.AddAsync(favorite);
             await dbContext.SaveChangesAsync();
