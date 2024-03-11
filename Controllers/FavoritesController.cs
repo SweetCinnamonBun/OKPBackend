@@ -46,6 +46,7 @@ namespace OKPBackend.Controllers
                                         .Where(f => f.UserId == userId)
                                         .ToListAsync();
 
+
             return Ok(userFavorites);
         }
 
@@ -71,7 +72,8 @@ namespace OKPBackend.Controllers
             var response = await dbContext.Favorites.AddAsync(favorite);
             await dbContext.SaveChangesAsync();
 
-            return Ok("Success");
+
+            return Ok(mapper.Map<FavoriteDto2>(favorite));
 
         }
 

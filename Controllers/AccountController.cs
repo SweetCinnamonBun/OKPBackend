@@ -289,12 +289,12 @@ namespace OKPBackend.Controllers
             token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
             var url = $"http://localhost:5173/confirm-email?token={token}&email={user.Email}";
 
-            var body = $"<p>Hello: {user.UserName}</p> + <p>Please confirm your email address by clicking on the following link.</p>" +
-                        $"<p><a href=\"{url}\">Click Here</a></p>" +
-                        "<p>Thank you</p>" +
+            var body = $"<p>Hei: {user.UserName}</p> + <p>Vahvista sähköpostiosoitteesi painamalla allaolevaa linkkiä</p>" +
+                        $"<p><a href=\"{url}\">Paina tästä</a></p>" +
+                        "<p>Kiitos</p>" +
                         $"<br>{application_name}";
 
-            var emailSend = new EmailSendDto(user.Email, "Confirm your email", body);
+            var emailSend = new EmailSendDto(user.Email, "Vahvista sähköpostiositteesi", body);
 
             return await emailService.SendEmailAsync(emailSend);
 
@@ -311,12 +311,12 @@ namespace OKPBackend.Controllers
             token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
             var url = $"http://localhost:5173/reset-password?token={token}&email={user.Email}";
 
-            var body = $"<p>Hello: {user.UserName}</p>" + "<p>In order to reset your password, please click on the following link.</p>" +
-                        $"<p><a href=\"{url}\">Click Here</a></p>" +
-                        "<p>Thank you</p>" +
+            var body = $"<p>Hei: {user.UserName}</p>" + "<p>Paina allaolevaa linkkiä vaihtaakseksi salasanasi</p>" +
+                        $"<p><a href=\"{url}\">Paina tästä</a></p>" +
+                        "<p>Kiitos</p>" +
                         $"<br>{application_name}";
 
-            var emailSend = new EmailSendDto(user.Email, "Reset Password", body);
+            var emailSend = new EmailSendDto(user.Email, "Vaihda salasana", body);
 
             return await emailService.SendEmailAsync(emailSend);
         }

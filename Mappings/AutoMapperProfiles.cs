@@ -20,6 +20,7 @@ namespace OKPBackend.Mappings
 
             CreateMap<Favorite, AddFavoriteDto>().ReverseMap();
             CreateMap<Favorite, FavoriteDto>().ReverseMap();
+            CreateMap<Favorite, FavoriteDto2>().ReverseMap();
         }
     }
 }
