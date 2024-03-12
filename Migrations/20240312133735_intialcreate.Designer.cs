@@ -12,8 +12,8 @@ using OKPBackend.Data;
 namespace OKPBackend.Migrations
 {
     [DbContext(typeof(OKPDbContext))]
-    [Migration("20240212225659_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240312133735_intialcreate")]
+    partial class intialcreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

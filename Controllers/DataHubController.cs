@@ -69,6 +69,13 @@ namespace OKPBackend.Controllers
                                         productInformations(where: {{ language: {{ _eq: fi }} }}) {{
                                             name
                                             description
+                                            url
+                                        }}
+                                        openingHours {{ 
+                                        open
+                                        openFrom
+                                        openTo
+                                        weekday
                                         }}
                                         productImages {{
                                             copyright
@@ -172,6 +179,13 @@ namespace OKPBackend.Controllers
                                             productInformations(where: {{ language: {{ _eq: fi }} }}) {{
                                                 name
                                                 description
+                                                url
+                                            }}
+                                            openingHours {{ 
+                                                open
+                                                openFrom
+                                                openTo
+                                                weekday
                                             }}
                                             productImages {{
                                                 copyright

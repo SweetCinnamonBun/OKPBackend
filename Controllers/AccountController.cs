@@ -265,12 +265,12 @@ namespace OKPBackend.Controllers
                     return Ok("Salasanan vaihtaminen onnistui!");
                 }
 
-                return BadRequest("Salasana ei täyty vaatimuksia.");
+                return BadRequest("Salasana ei täytä vaatimuksia.");
             }
             catch (System.Exception)
             {
 
-                return BadRequest("Salasana ei täyty vaatimuksia.");
+                return BadRequest("Salasana ei täytä vaatimuksia.");
             }
         }
 
