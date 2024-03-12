@@ -113,8 +113,8 @@ builder.Services.AddScoped<EmailService>();
 //AUTHENTICATION
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
-    DotNetEnv.Env.Load();
-    string jwt_key = Environment.GetEnvironmentVariable("jwt_key");
+    // DotNetEnv.Env.Load();
+    // string jwt_key = Environment.GetEnvironmentVariable("jwt_key");
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -124,7 +124,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
         //builder.Configuration["Jwt:Key"]
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt_key))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("36c472de-f62d-4f2a-b009-cf24bbb4d8cf"))
 
     };
 });
