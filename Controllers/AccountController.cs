@@ -299,10 +299,10 @@ namespace OKPBackend.Controllers
         //HELPER METHODS
         private async Task<bool> SendConfirmEmailAsync(User user)
         {
-            DotNetEnv.Env.Load();
-            string confirm_email_path = Environment.GetEnvironmentVariable("confirm_email_path");
-            string reset_password_path = Environment.GetEnvironmentVariable("reset_password_path");
-            string application_name = Environment.GetEnvironmentVariable("application_name");
+            // DotNetEnv.Env.Load();
+            // string confirm_email_path = Environment.GetEnvironmentVariable("confirm_email_path");
+            // string reset_password_path = Environment.GetEnvironmentVariable("reset_password_path");
+            // string application_name = Environment.GetEnvironmentVariable("application_name");
 
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
             Console.WriteLine(user.Email);
@@ -312,7 +312,7 @@ namespace OKPBackend.Controllers
             var body = $"<p>Hei: {user.UserName}</p> + <p>Vahvista sähköpostiosoitteesi painamalla allaolevaa linkkiä</p>" +
                         $"<p><a href=\"{url}\">Paina tästä</a></p>" +
                         "<p>Kiitos</p>" +
-                        $"<br>{application_name}";
+                        $"<br>RakennustenKaupunki";
 
             var emailSend = new EmailSendDto(user.Email, "Vahvista sähköpostiositteesi", body);
 
@@ -323,9 +323,9 @@ namespace OKPBackend.Controllers
 
         private async Task<bool> SendForgotUsernameOrPasswordEmail(User user)
         {
-            DotNetEnv.Env.Load();
-            string reset_password_path = Environment.GetEnvironmentVariable("reset_password_path");
-            string application_name = Environment.GetEnvironmentVariable("application_name");
+            // DotNetEnv.Env.Load();
+            // string reset_password_path = Environment.GetEnvironmentVariable("reset_password_path");
+            // string application_name = Environment.GetEnvironmentVariable("application_name");
 
             var token = await userManager.GeneratePasswordResetTokenAsync(user);
             token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
@@ -334,7 +334,7 @@ namespace OKPBackend.Controllers
             var body = $"<p>Hei: {user.UserName}</p>" + "<p>Paina allaolevaa linkkiä vaihtaakseksi salasanasi</p>" +
                         $"<p><a href=\"{url}\">Paina tästä</a></p>" +
                         "<p>Kiitos</p>" +
-                        $"<br>{application_name}";
+                        $"<br>RakennustenKaupunki";
 
             var emailSend = new EmailSendDto(user.Email, "Vaihda salasana", body);
 

@@ -26,8 +26,8 @@ namespace OKPBackend.Repositories.Users
 
         public string CreateJWTToken(User user)
         {
-            DotNetEnv.Env.Load();
-            string? jwt_key = Environment.GetEnvironmentVariable("jwt_key");
+            // DotNetEnv.Env.Load();
+            // string? jwt_key = Environment.GetEnvironmentVariable("jwt_key");
             //Create claims
 
             var claims = new List<Claim>();
@@ -43,7 +43,7 @@ namespace OKPBackend.Repositories.Users
             //     claims.Add(new Claim(ClaimTypes.Role, role));
             // }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt_key));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("36c472de-f62d-4f2a-b009-cf24bbb4d8cf"));
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

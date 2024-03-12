@@ -35,21 +35,22 @@ namespace OKPBackend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetData()
         {
-            DotNetEnv.Env.Load();
-            string client_secret = Environment.GetEnvironmentVariable("client_secret");
-            string username = Environment.GetEnvironmentVariable("username");
-            string password = Environment.GetEnvironmentVariable("password");
-            string publishing_id = Environment.GetEnvironmentVariable("publishing_id");
+            // DotNetEnv.Env.Load();
+            // string client_secret = Environment.GetEnvironmentVariable("client_secret");
+            // string username = Environment.GetEnvironmentVariable("username");
+            // string password = Environment.GetEnvironmentVariable("password");
+            // string publishing_id = Environment.GetEnvironmentVariable("publishing_id");
+            string publishing_id = "a5d8d6e4-869c-4de6-abf8-5cd5d288447a";
 
             try
             {
                 var authBody = new NameValueCollection
                 {
                     {"client_id", "datahub-api"},
-                    {"client_secret", client_secret},
+                    {"client_secret", "ed7cd94f-727e-4cf7-879c-1c26f798bcc0"},
                     {"grant_type", "password"},
-                    {"username", username},
-                    {"password", password}
+                    {"username", "matti.kukkasjarvi@gmail.com"},
+                    {"password", "ohjelmistoprojekti"}
                 };
 
                 var authRes = await _httpClient.PostAsync("https://iam-datahub.visitfinland.com/auth/realms/Datahub/protocol/openid-connect/token",
@@ -154,10 +155,10 @@ namespace OKPBackend.Controllers
                 var authBody = new NameValueCollection
                     {
                         {"client_id", "datahub-api"},
-                        {"client_secret", client_secret},
+                        {"client_secret", "ed7cd94f-727e-4cf7-879c-1c26f798bcc0"},
                         {"grant_type", "password"},
-                        {"username", username},
-                        {"password", password}
+                        {"username", "matti.kukkasjarvi@gmail.com"},
+                        {"password", "ohjelmistoprojekti"}
                     };
 
                 var authRes = await _httpClient.PostAsync("https://iam-datahub.visitfinland.com/auth/realms/Datahub/protocol/openid-connect/token",

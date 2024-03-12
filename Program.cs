@@ -60,10 +60,10 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddDbContext<OKPDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OKPConnectionString")));
 
-if (builder.Environment.IsProduction())
-{
-    builder.Services.AddDbContext<OKPDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OKPConnectionString")));
-}
+// if (builder.Environment.IsProduction())
+// {
+//     builder.Services.AddDbContext<OKPDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OKPConnectionString")));
+// }
 
 
 // if (builder.Environment.IsProduction())
