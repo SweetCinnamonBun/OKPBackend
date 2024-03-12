@@ -24,7 +24,7 @@ namespace OKPBackend.Repositories.Users
             this.configuration = configuration;
         }
 
-        public string CreateJWTToken(User user, List<string> roles)
+        public string CreateJWTToken(User user)
         {
             DotNetEnv.Env.Load();
             string? jwt_key = Environment.GetEnvironmentVariable("jwt_key");
@@ -38,10 +38,10 @@ namespace OKPBackend.Repositories.Users
             claims.Add(new Claim("capitalized", user.NormalizedUserName));
 
 
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+            // foreach (var role in roles)
+            // {
+            //     claims.Add(new Claim(ClaimTypes.Role, role));
+            // }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt_key));
 

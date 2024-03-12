@@ -55,11 +55,11 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// DotNetEnv.Env.Load();
-// string? db_password = Environment.GetEnvironmentVariable("db_password");
+DotNetEnv.Env.Load();
+string? db_password = Environment.GetEnvironmentVariable("db_password");
 
 string? connectionString = builder.Configuration.GetConnectionString("OKPConnectionString");
-// connectionString = connectionString.Replace("{DatabasePassword}", db_password ?? "");
+connectionString = connectionString.Replace("{DatabasePassword}", db_password ?? "");
 
 
 builder.Services.AddCors(x => x.AddPolicy("corspolicy", build =>

@@ -14,6 +14,6 @@ namespace OKPBackend.Repositories.Users
 
         // Task<User?> GetByUsername(UserLoginDto userLoginDto);
 
-        string CreateJWTToken(User user, List<string> roles);
+        string CreateJWTToken(User user);
     }
 }

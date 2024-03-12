@@ -13,6 +13,6 @@ namespace OKPBackend.Models.DTO.Users
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public List<FavoriteDto> Favorites { get; set; }
-        public string[] Roles { get; set; }
+
     }
 }

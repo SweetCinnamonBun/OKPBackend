@@ -60,19 +60,28 @@ namespace OKPBackend.Controllers
 
                     if (checkPasswordResult)
                     {
-                        var roles = await userManager.GetRolesAsync(user);
+                        // var roles = await userManager.GetRolesAsync(user);
 
-                        if (roles != null)
+                        // if (roles != null)
+                        // {
+                        //     var jwtToken = usersRepository.CreateJWTToken(user, roles.ToList());
+
+                        //     var response = new LoginResponseDto
+                        //     {
+                        //         JwtToken = jwtToken
+                        //     };
+
+                        //     return Ok(response);
+                        // }
+
+                        var jwtToken = usersRepository.CreateJWTToken(user);
+
+                        var response = new LoginResponseDto
                         {
-                            var jwtToken = usersRepository.CreateJWTToken(user, roles.ToList());
+                            JwtToken = jwtToken
+                        };
 
-                            var response = new LoginResponseDto
-                            {
-                                JwtToken = jwtToken
-                            };
-
-                            return Ok(response);
-                        }
+                        return Ok(response);
 
                     }
                 }
@@ -96,10 +105,10 @@ namespace OKPBackend.Controllers
                 return BadRequest("Salasanat eivät täsmää.");
             }
 
-            if (userRegisterDto.Roles == null || userRegisterDto.Roles.Length == 0)
-            {
-                return BadRequest("A role must be assigned for a user.");
-            }
+            // if (userRegisterDto.Roles == null || userRegisterDto.Roles.Length == 0)
+            // {
+            //     return BadRequest("A role must be assigned for a user.");
+            // }
 
             var newUser = new User
             {
@@ -115,32 +124,43 @@ namespace OKPBackend.Controllers
             if (identityResult.Succeeded)
             {
                 //Checks if the client provided roles to the user.
-                if (userRegisterDto.Roles != null && userRegisterDto.Roles.Any())
+                // if (userRegisterDto.Roles != null && userRegisterDto.Roles.Any())
+                // {
+                //     //Adds new roles to the user
+                //     var rolesResponse = await userManager.AddToRolesAsync(newUser, userRegisterDto.Roles);
+                // }
+                // else
+                // {
+                //     return BadRequest("You have to assign at least one role to the user!");
+                // }
+                try
                 {
-                    //Adds new roles to the user
-                    var rolesResponse = await userManager.AddToRolesAsync(newUser, userRegisterDto.Roles);
+                    if (await SendConfirmEmailAsync(newUser))
+                    {
+                        return Ok(new JsonResult(new { title = "Account Created", message = "Your account has been created, please confirm your email address" }));
+                    }
                 }
-                else
+                catch (System.Exception)
                 {
-                    return BadRequest("You have to assign at least one role to the user!");
-                }
+                    return BadRequest("Email failed");
+                };
             }
             else
             {
                 return BadRequest("Rekisteröityminen ei onnistunut: " + "\n" + string.Join(" ", identityResult.Errors.Select(e => e.Description)));
             }
 
-            try
-            {
-                if (await SendConfirmEmailAsync(newUser))
-                {
-                    return Ok(new JsonResult(new { title = "Account Created", message = "Your account has been created, please confirm your email address" }));
-                }
-            }
-            catch (System.Exception)
-            {
-                return BadRequest("Email failed");
-            };
+            // try
+            // {
+            //     if (await SendConfirmEmailAsync(newUser))
+            //     {
+            //         return Ok(new JsonResult(new { title = "Account Created", message = "Your account has been created, please confirm your email address" }));
+            //     }
+            // }
+            // catch (System.Exception)
+            // {
+            //     return BadRequest("Email failed");
+            // };
 
 
             return BadRequest("Jotain meni vikaan.");

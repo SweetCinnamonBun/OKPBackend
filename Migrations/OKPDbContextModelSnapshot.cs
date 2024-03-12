@@ -47,22 +47,6 @@ namespace OKPBackend.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "f2172843-0f6f-4779-b38a-45a3e1dd27c7",
-                            ConcurrencyStamp = "f2172843-0f6f-4779-b38a-45a3e1dd27c7",
-                            Name = "Reader",
-                            NormalizedName = "READER"
-                        },
-                        new
-                        {
-                            Id = "51e9b872-df58-49ec-bbf1-ba4e31a4f9e6",
-                            ConcurrencyStamp = "51e9b872-df58-49ec-bbf1-ba4e31a4f9e6",
-                            Name = "Writer",
-                            NormalizedName = "WRITER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
