@@ -97,7 +97,7 @@ builder.Services.AddCors(x => x.AddPolicy("corspolicy", build =>
     build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
 
-builder.Services.AddDbContext<OKPDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OKPConnectionString")));
+// builder.Services.AddDbContext<OKPDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OKPConnectionString")));
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
