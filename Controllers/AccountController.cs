@@ -307,7 +307,7 @@ namespace OKPBackend.Controllers
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
             Console.WriteLine(user.Email);
             token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-            var url = $"http://localhost:5173/confirm-email?token={token}&email={user.Email}";
+            var url = $"https://kind-moss-0cbe03f03.5.azurestaticapps.net/confirm-email?token={token}&email={user.Email}";
 
             var body = $"<p>Hei: {user.UserName}</p> + <p>Vahvista sähköpostiosoitteesi painamalla allaolevaa linkkiä</p>" +
                         $"<p><a href=\"{url}\">Paina tästä</a></p>" +
@@ -329,7 +329,7 @@ namespace OKPBackend.Controllers
 
             var token = await userManager.GeneratePasswordResetTokenAsync(user);
             token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-            var url = $"http://localhost:5173/reset-password?token={token}&email={user.Email}";
+            var url = $"https://kind-moss-0cbe03f03.5.azurestaticapps.net/reset-password?token={token}&email={user.Email}";
 
             var body = $"<p>Hei: {user.UserName}</p>" + "<p>Paina allaolevaa linkkiä vaihtaakseksi salasanasi</p>" +
                         $"<p><a href=\"{url}\">Paina tästä</a></p>" +

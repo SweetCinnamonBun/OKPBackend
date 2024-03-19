@@ -32,7 +32,6 @@ namespace OKPBackend.Repositories.Users
 
             var claims = new List<Claim>();
 
-            claims.Add(new Claim(ClaimTypes.Email, user.Email));
             claims.Add(new Claim(ClaimTypes.Name, user.UserName));
             claims.Add(new Claim("Id", user.Id));
             claims.Add(new Claim("capitalized", user.NormalizedUserName));
